@@ -15,7 +15,6 @@ function App() {
           <Route path="/write" element={<Write />} />
           <Route path="/view" element={<View />} />
           <Route path="/entry/:id" element={<Entry />} />
-          {/* Add more routes as we convert other pages */}
         </Routes>
       </div>
     </Router>
