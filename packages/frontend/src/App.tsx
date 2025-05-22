@@ -1,9 +1,25 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import Write from "./components/Write";
+import View from "./components/View";
+import Entry from "./components/Entry";
+
 function App() {
-    return (
-        <div>
-            <h1>My cool webpage</h1>
-        </div>
-    );
+  return (
+    <Router>
+      <div>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/write" element={<Write />} />
+          <Route path="/view" element={<View />} />
+          <Route path="/entry/:id" element={<Entry />} />
+          {/* Add more routes as we convert other pages */}
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
