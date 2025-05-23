@@ -352,3 +352,71 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(26px);
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's above everything */
+    backdrop-filter: blur(2px); /* Optional: adds a slight blur to the background */
+  }
+  
+.modal-content {
+background-color: var(--calendar-background);
+border-radius: 0.5rem;
+padding: 2rem;
+width: 90%; /* Wider modal */
+max-width: 800px; /* Maximum width */
+max-height: 90vh; /* Taller modal */
+overflow-y: auto;
+position: relative;
+color: var(--content-color-text);
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+}
+
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid var(--input-border);
+}
+
+.modal-date {
+color: var(--nav-color-text);
+margin-bottom: 1.5rem;
+font-size: 1.1rem;
+font-weight: 500;
+}
+
+.modal-body {
+line-height: 1.6;
+font-size: 1.1rem;
+}
+
+.close-btn {
+background: none;
+border: none;
+font-size: 1.8rem;
+cursor: pointer;
+color: var(--content-color-text);
+padding: 0.5rem;
+line-height: 1;
+transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+color: var(--button-color-background);
+}
+
+.modal-content p {
+white-space: pre-wrap;
+margin-bottom: 1rem;
+}
