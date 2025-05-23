@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Header from "./Header";
 
 const Entry = () => {
   const { id } = useParams();
@@ -13,17 +14,7 @@ const Entry = () => {
 
   return (
     <>
-      <header>
-        <h1>Daily Journal</h1>
-        <div className="nav-date">
-          <p>{entry.date}</p>
-        </div>
-        <div className="nav-container">
-          <Link to="/view">
-            <button className="main-btn">Calendar View</button>
-          </Link>
-        </div>
-      </header>
+      <Header date={entry.date} />
       <div className="entry-content">
         <h2>{entry.title}</h2>
         <p>{entry.content}</p>
