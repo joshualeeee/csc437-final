@@ -13,8 +13,8 @@
     --calendar-background: white;
     --calendar-day-background: #ebedf0;
     --calendar-day-hover: #d1d5db;
-    --calendar-entry-background: #216e39;
-    --calendar-entry-hover: #1a5630;
+    --calendar-entry-background: #41cf6e;
+    --calendar-entry-hover: #2d9453;
     --input-border: #ddd;
     --switch-background: #3C896D;
     --switch-handle: #FFFF;
@@ -203,6 +203,7 @@ h2 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0.5rem;
+    grid-auto-flow: row;
 }
 
 .calendar-grid a {
@@ -220,6 +221,7 @@ h2 {
     font-size: 0.8rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    grid-row: auto;
 }
 
 .calendar-day:hover {
@@ -232,6 +234,10 @@ h2 {
 
 .calendar-day.has-entry:hover {
     background-color: var(--calendar-entry-hover);
+}
+
+.calendar-day.empty {
+    display: none;
 }
 
 .entry-content {
