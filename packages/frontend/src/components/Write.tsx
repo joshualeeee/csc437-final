@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import Header from "./Header";
 
 const Write = () => {
   const [title, setTitle] = useState("");
@@ -12,6 +13,8 @@ const Write = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className="content-container">
       <form className="journal-form" onSubmit={handleSubmit}>
         <div className="form-header">
@@ -44,6 +47,7 @@ const Write = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

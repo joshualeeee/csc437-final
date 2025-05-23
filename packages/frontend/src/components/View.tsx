@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Header from "./Header";
 
 const View = () => {
   const [currentDate] = useState(new Date());
@@ -24,6 +25,8 @@ const View = () => {
   const hasEntry = (day: number) => day === 11; // Example: day 11 has an entry
 
   return (
+    <>
+    <Header />
     <div className="content-container">
       <div className="calendar-container">
         <div className="calendar-header">
@@ -70,6 +73,7 @@ const View = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
