@@ -42,19 +42,8 @@ const View = () => {
   // Get the total number of days in the month
   const totalDays = lastDayOfMonth.getDate();
 
-  // Calculate the number of days from the previous month to show
-  const prevMonthDays = Array.from({ length: startingDayIndex }, (_, i) => {
-    const prevMonthLastDay = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      0
-    ).getDate();
-    return prevMonthLastDay - startingDayIndex + i + 1;
-  });
-
   // Calculate the number of days from the next month to show
   const remainingDays = 42 - (startingDayIndex + totalDays); // 42 = 6 rows × 7 days
-  const nextMonthDays = Array.from({ length: remainingDays }, (_, i) => i + 1);
 
   const handlePrevMonth = () => {
     setCurrentDate(
@@ -125,17 +114,18 @@ const View = () => {
               ))}
             </div>
             <div className="calendar-grid">
-              {/* Previous month days */}
-              {prevMonthDays.map((day: number) => (
-                <div key={`prev-${day}`} className="calendar-day other-month">
-                  {day}
-                </div>
+              {Array.from({ length: startingDayIndex }, (_, i) => (
+                <div key={`prev-${i}`} className="calendar-day empty"></div>
               ))}
 
-              {/* Current month days */}
               {Array.from({ length: totalDays }, (_, i) => {
                 const day = i + 1;
                 const entry = getEntry(day);
+                const dayOfWeek = new Date(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth(),
+                  day
+                ).getDay();
 
                 return (
                   <div
@@ -144,17 +134,15 @@ const View = () => {
                       entry ? "has-entry clickable" : ""
                     }`}
                     onClick={() => entry && handleDayClick(day)}
+                    style={{ gridColumn: dayOfWeek + 1 }}
                   >
                     {day}
                   </div>
                 );
               })}
 
-              {/* Next month days */}
-              {nextMonthDays.map((day: number) => (
-                <div key={`next-${day}`} className="calendar-day other-month">
-                  {day}
-                </div>
+              {Array.from({ length: remainingDays }, (_, i) => (
+                <div key={`next-${i}`} className="calendar-day empty"></div>
               ))}
             </div>
           </div>
