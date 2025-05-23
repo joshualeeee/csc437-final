@@ -8,6 +8,8 @@ const View = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
 
+  // dummy entries will be replaced with actual entries from the database here
+
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const monthNames = [
     "January",
@@ -42,8 +44,8 @@ const View = () => {
   // Get the total number of days in the month
   const totalDays = lastDayOfMonth.getDate();
 
-  // Calculate the number of days from the next month to show
-  const remainingDays = 42 - (startingDayIndex + totalDays); // 42 = 6 rows × 7 days
+  // Calculate the number of days from the next month to fill up the calendar
+  const remainingDays = 42 - (startingDayIndex + totalDays);
 
   const handlePrevMonth = () => {
     setCurrentDate(
