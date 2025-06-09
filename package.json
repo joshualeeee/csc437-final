@@ -10,5 +10,8 @@
   "description": "",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "mongo": "^0.1.0"
+  }
 }
