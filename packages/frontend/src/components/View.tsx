@@ -4,10 +4,15 @@ import type { Entry } from "../types/Entry";
 import { dummyEntries } from "../types/Entry";
 import EntryModal from "./EntryModal";
 
-const View = () => {
+interface ViewProps {
+  authToken: string;
+}
+
+const View = (props: ViewProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
 
+  console.log(props.authToken);
   // dummy entries will be replaced with actual entries from the database here
 
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
