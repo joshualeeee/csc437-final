@@ -10,7 +10,7 @@ export class CredentialsProvider {
     private readonly collection: Collection<ICredentialsDocument>;
 
     constructor(mongoClient: MongoClient) {
-        const COLLECTION_NAME = process.env.CREDS_COLLECTION_NAME;
+        const COLLECTION_NAME = process.env.USERS_COLLECTION_NAME;
         if (!COLLECTION_NAME) {
             throw new Error("Missing CREDS_COLLECTION_NAME from env file");
         }
