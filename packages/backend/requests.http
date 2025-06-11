@@ -1,0 +1,64 @@
+### New user registration
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{ "username": "josh", "password": "password" }
+
+
+### Login to get token
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{ "username": "josh", "password": "password" }
+
+# ### Get all journal entries (requires auth token)
+# GET http://localhost:3000/api/journals
+# Authorization: Bearer {{authToken}}
+
+# ### Create new journal entry (requires auth token)
+# POST http://localhost:3000/api/journals
+# Authorization: Bearer {{authToken}}
+# Content-Type: application/json
+
+# {
+#     "title": "My First Entry",
+#     "entry": "This is a test journal entry"
+# }
+
+# ### Update journal entry (requires auth token)
+# PUT http://localhost:3000/api/journals/{{journalId}}
+# Authorization: Bearer {{authToken}}
+# Content-Type: application/json
+
+# {
+#     "title": "Updated Entry",
+#     "entry": "This is an updated journal entry"
+# }
+
+# ### Test validation - Missing title
+# POST http://localhost:3000/api/journals
+# Authorization: Bearer {{authToken}}
+# Content-Type: application/json
+
+# {
+#     "entry": "This entry is missing a title"
+# }
+
+# ### Test validation - Missing entry
+# POST http://localhost:3000/api/journals
+# Authorization: Bearer {{authToken}}
+# Content-Type: application/json
+
+# {
+#     "title": "Entry without content"
+# }
+
+# ### Test validation - Entry too long
+# POST http://localhost:3000/api/journals
+# Authorization: Bearer {{authToken}}
+# Content-Type: application/json
+
+# {
+#     "title": "Long Entry",
+#     "entry": "This entry is way too long and should exceed the maximum length of 100 characters that we set in our backend"
+# }
