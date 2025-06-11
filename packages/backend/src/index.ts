@@ -4,9 +4,13 @@ import path from "path";
 import { ValidRoutes } from "./shared/validRoutes";
 import { connectMongo } from "./createMongo";
 import { registerAuthRoutes, verifyAuthToken } from "./routes/authRoutes";
+import { registerJournalRoutes } from "./routes/journalRoutes";
+import { JournalProvider } from "./journalProvider";
 
 dotenv.config(); // Read the .env file in the current working directory, and load values into process.env.
 const mongoClient = connectMongo();
+const journalProvider = new JournalProvider(mongoClient);
+
 const PORT = process.env.PORT || 3000;
 const STATIC_DIR = process.env.STATIC_DIR || "public";
 
@@ -26,6 +30,7 @@ app.use(express.static(STATIC_DIR));
 // Register routes
 registerAuthRoutes(app, mongoClient);
 app.use("/api/*", verifyAuthToken);
+registerJournalRoutes(app, journalProvider);
 
 app.get("/api/hello", (req, res) => {
     res.send("Hello, World");
