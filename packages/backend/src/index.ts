@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
-import { ValidRoutes } from "./shared/validRoutes";
+import { ValidRoutes } from "./common/validRoutes";
 import { connectMongo } from "./createMongo";
 import { registerAuthRoutes, verifyAuthToken } from "./routes/authRoutes";
 import { registerJournalRoutes } from "./routes/journalRoutes";
