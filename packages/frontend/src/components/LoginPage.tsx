@@ -1,5 +1,6 @@
 import React, { useActionState } from "react";
 import { Link } from "react-router";
+import Header from "./Header";
 
 interface LoginPageProps {
   isRegistering?: boolean;
@@ -71,42 +72,45 @@ export function LoginPage({ isRegistering = false, onAuth }: LoginPageProps) {
 
   return (
     <>
-      <h2>{isRegistering ? "Register a new account" : "Login"}</h2>
-      {result && (
-        <p className={`LoginPage-message ${result.type}`} aria-live="polite">
-          {result.message}
-        </p>
-      )}
-      {isPending && <p className="LoginPage-message loading">Loading...</p>}
-      <form className="LoginPage-form" action={submitAction}>
-        <label htmlFor={usernameInputId}>Username</label>
-        <input
-          id={usernameInputId}
-          name="username"
-          required
-          disabled={isPending}
-        />
+      <Header />
+      <div className="content-container">
+        <h2>{isRegistering ? "Register a new account" : "Login"}</h2>
+        {result && (
+          <p className={`LoginPage-message ${result.type}`} aria-live="polite">
+            {result.message}
+          </p>
+        )}
+        {isPending && <p className="LoginPage-message loading">Loading...</p>}
+        <form className="LoginPage-form" action={submitAction}>
+          <label htmlFor={usernameInputId}>Username</label>
+          <input
+            id={usernameInputId}
+            name="username"
+            required
+            disabled={isPending}
+          />
 
-        <label htmlFor={passwordInputId}>Password</label>
-        <input
-          id={passwordInputId}
-          name="password"
-          type="password"
-          required
-          disabled={isPending}
-        />
+          <label htmlFor={passwordInputId}>Password</label>
+          <input
+            id={passwordInputId}
+            name="password"
+            type="password"
+            required
+            disabled={isPending}
+          />
 
-        <input
-          type="submit"
-          value={isRegistering ? "Register" : "Login"}
-          disabled={isPending}
-        />
-      </form>
-      {!isRegistering && (
-        <p className="LoginPage-register-link">
-          Don't have an account? <Link to="/register">Register here</Link>
-        </p>
-      )}
+          <input
+            type="submit"
+            value={isRegistering ? "Register" : "Login"}
+            disabled={isPending}
+          />
+        </form>
+        {!isRegistering && (
+          <p className="LoginPage-register-link">
+            Don't have an account? <Link to="/register">Register here</Link>
+          </p>
+        )}
+      </div>
     </>
   );
 }
