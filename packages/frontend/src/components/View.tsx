@@ -1,16 +1,18 @@
 import { useState } from "react";
 import Header from "./Header";
-import type { Entry } from "../types/Entry";
-import { dummyEntries } from "../types/Entry";
+import type { IApiJournalData } from "../../../backend/src/common/IApiData";
 import EntryModal from "./EntryModal";
 
 interface ViewProps {
   authToken: string;
+  journals: IApiJournalData[];
 }
 
 const View = (props: ViewProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<IApiJournalData | null>(
+    null
+  );
 
   console.log(props.authToken);
   // dummy entries will be replaced with actual entries from the database here
@@ -65,7 +67,7 @@ const View = (props: ViewProps) => {
   };
 
   // Get entry for a specific day
-  const getEntry = (day: number): Entry | undefined => {
+  const getEntry = (day: number): IApiJournalData | undefined => {
     const dateString = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
@@ -74,7 +76,7 @@ const View = (props: ViewProps) => {
       .toISOString()
       .split("T")[0];
 
-    return dummyEntries.find((entry) => entry.date === dateString);
+    return props.journals.find((entry) => entry.date === dateString);
   };
 
   const handleDayClick = (day: number) => {
@@ -157,7 +159,7 @@ const View = (props: ViewProps) => {
       </div>
       {selectedEntry && (
         <EntryModal
-          entry={selectedEntry}
+          journal={selectedEntry}
           onClose={() => setSelectedEntry(null)}
         />
       )}
