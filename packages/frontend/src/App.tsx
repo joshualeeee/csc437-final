@@ -5,6 +5,7 @@ import Write from "./components/Write";
 import View from "./components/View";
 import { LoginPage } from "./components/LoginPage";
 import { ValidRoutes } from "csc437-monorepo-backend/src/shared/ValidRoutes";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 function App() {
   const [authToken, setAuthToken] = useState<string | null>(() =>
@@ -21,8 +22,22 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/write" element={<Write authToken={authToken || ""} />} />
-      <Route path="/view" element={<View authToken={authToken || ""} />} />
+      <Route
+        path="/write"
+        element={
+          <ProtectedRoute authToken={authToken || ""}>
+            <Write authToken={authToken || ""} />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/view"
+        element={
+          <ProtectedRoute authToken={authToken || ""}>
+            <View authToken={authToken || ""} />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path={ValidRoutes.LOGIN}
         element={<LoginPage isRegistering={false} onAuth={handleAuth} />}
