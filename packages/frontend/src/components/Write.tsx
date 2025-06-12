@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import Header from "./Header";
 import type { IApiJournalData } from "csc437-monorepo-backend/src/common/IApiData";
+import toast from "react-hot-toast";
 
 interface WriteProps {
   journals: IApiJournalData[];
+  refetchJournals: () => void;
   authToken: string;
 }
 
@@ -33,13 +35,39 @@ const Write = (props: WriteProps) => {
     }
   }, [props.journals]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // TODO: Implement save functionality
-    console.log({ title, content });
-  };
 
-  console.log(props.authToken);
+    try {
+      const response = await fetch(`/api/journals`, {
+        method: "POST", // or "PUT" if you're updating
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props.authToken}`, // include if protected
+        },
+        body: JSON.stringify({
+          title,
+          entry: content,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to save journal");
+      }
+
+      setIsExistingEntry(true);
+      if (props.refetchJournals) {
+        props.refetchJournals();
+      }
+      toast.success("Journal entry saved successfully!");
+      console.log("Journal saved:", data);
+    } catch (err: any) {
+      console.error("Error saving journal:", err.message);
+      toast.error("Error saving journal");
+    }
+  };
 
   return (
     <>

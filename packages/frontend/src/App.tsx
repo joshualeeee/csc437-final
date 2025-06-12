@@ -6,6 +6,7 @@ import { LoginPage } from "./components/LoginPage";
 import { ValidRoutes } from "csc437-monorepo-backend/src/common/validRoutes";
 import { ProtectedRoute } from "./ProtectedRoute";
 import type { IApiJournalData } from "csc437-monorepo-backend/src/common/IApiData";
+import { Toaster } from "react-hot-toast";
 
 enum JournalComponent {
   WRITE = "write",
@@ -21,7 +22,7 @@ function App() {
   const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchJournals = () => {
     if (!authToken) return;
 
     setIsLoading(true);
@@ -48,6 +49,10 @@ function App() {
         setIsLoading(false);
         setHasError(true);
       });
+  };
+
+  useEffect(() => {
+    fetchJournals();
   }, [authToken]);
 
   const handleAuth = (token: string) => {
@@ -57,52 +62,57 @@ function App() {
   };
 
   return (
-    <Routes>
-      <Route
-        path={ValidRoutes.HOME}
-        element={
-          <ProtectedRoute authToken={authToken || ""}>
-            <Home />{" "}
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path={ValidRoutes.WRITE}
-        element={
-          <ProtectedRoute authToken={authToken || ""}>
-            <AllJournals
-              authToken={authToken || ""}
-              isLoading={isLoading}
-              hasError={hasError}
-              journals={journals}
-              component={JournalComponent.WRITE}
-            ></AllJournals>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path={ValidRoutes.VIEW}
-        element={
-          <ProtectedRoute authToken={authToken || ""}>
-            <AllJournals
-              authToken={authToken || ""}
-              isLoading={isLoading}
-              hasError={hasError}
-              journals={journals}
-              component={JournalComponent.VIEW}
-            ></AllJournals>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path={ValidRoutes.LOGIN}
-        element={<LoginPage isRegistering={false} onAuth={handleAuth} />}
-      />
-      <Route
-        path={ValidRoutes.REGISTER}
-        element={<LoginPage isRegistering={true} onAuth={handleAuth} />}
-      />
-    </Routes>
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+      <Routes>
+        <Route
+          path={ValidRoutes.HOME}
+          element={
+            <ProtectedRoute authToken={authToken || ""}>
+              <Home />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ValidRoutes.WRITE}
+          element={
+            <ProtectedRoute authToken={authToken || ""}>
+              <AllJournals
+                authToken={authToken || ""}
+                isLoading={isLoading}
+                hasError={hasError}
+                journals={journals}
+                component={JournalComponent.WRITE}
+                refetchJournals={fetchJournals}
+              ></AllJournals>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ValidRoutes.VIEW}
+          element={
+            <ProtectedRoute authToken={authToken || ""}>
+              <AllJournals
+                authToken={authToken || ""}
+                isLoading={isLoading}
+                hasError={hasError}
+                journals={journals}
+                component={JournalComponent.VIEW}
+                refetchJournals={fetchJournals}
+              ></AllJournals>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ValidRoutes.LOGIN}
+          element={<LoginPage isRegistering={false} onAuth={handleAuth} />}
+        />
+        <Route
+          path={ValidRoutes.REGISTER}
+          element={<LoginPage isRegistering={true} onAuth={handleAuth} />}
+        />
+      </Routes>
+    </>
   );
 }
 

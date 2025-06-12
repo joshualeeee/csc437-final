@@ -13,6 +13,7 @@ interface AllJournalsProps {
   hasError: boolean;
   authToken: string;
   component: JournalComponent;
+  refetchJournals: () => void;
 }
 
 export function AllJournals({
@@ -21,6 +22,7 @@ export function AllJournals({
   hasError,
   authToken,
   component,
+  refetchJournals,
 }: AllJournalsProps) {
   if (isLoading) {
     return (
@@ -46,7 +48,11 @@ export function AllJournals({
       {component === JournalComponent.VIEW ? (
         <View journals={journals} />
       ) : (
-        <Write journals={journals} authToken={authToken || ""} />
+        <Write
+          journals={journals}
+          authToken={authToken || ""}
+          refetchJournals={refetchJournals}
+        />
       )}
     </>
   );
