@@ -1,14 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import Header from "./Header";
+import type { IApiJournalData } from "csc437-monorepo-backend/src/common/IApiData";
 
 interface WriteProps {
+  journals: IApiJournalData[];
   authToken: string;
 }
 
 const Write = (props: WriteProps) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isExistingEntry, setIsExistingEntry] = useState(false);
+
+  useEffect(() => {
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0];
+
+    // Find if there's an entry for today
+    const existingEntry = props.journals.find(
+      (journal) => journal.date === today
+    );
+
+    if (existingEntry) {
+      setTitle(existingEntry.title);
+      setContent(existingEntry.entry);
+      setIsExistingEntry(true);
+    } else {
+      setTitle("");
+      setContent("");
+      setIsExistingEntry(false);
+    }
+  }, [props.journals]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -24,10 +47,10 @@ const Write = (props: WriteProps) => {
       <div className="content-container">
         <form className="journal-form" onSubmit={handleSubmit}>
           <div className="form-header">
-            <h2>New Journal</h2>
+            <h2>{isExistingEntry ? "Edit Journal" : "New Journal"}</h2>
             <div className="button-container">
               <button type="submit" className="main-btn">
-                Save Entry
+                {isExistingEntry ? "Update Entry" : "Save Entry"}
               </button>
             </div>
           </div>
