@@ -4,7 +4,6 @@ import type { IApiJournalData } from "../../../backend/src/common/IApiData";
 import EntryModal from "./EntryModal";
 
 interface ViewProps {
-  authToken: string;
   journals: IApiJournalData[];
 }
 
@@ -14,8 +13,6 @@ const View = (props: ViewProps) => {
     null
   );
 
-  console.log(props.authToken);
-  // dummy entries will be replaced with actual entries from the database here
 
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const monthNames = [
