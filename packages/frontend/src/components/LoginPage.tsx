@@ -37,11 +37,12 @@ export function LoginPage({ isRegistering = false, onAuth }: LoginPageProps) {
         });
 
         if (!response.ok) {
+          const data = await response.json().catch(() => ({})); // safely parse JSON
           return {
             type: "error",
-            message: isRegistering
-              ? "Failed to create account"
-              : "Failed to login",
+            message:
+              data.message ||
+              (isRegistering ? "Failed to create account" : "Failed to login"),
           };
         }
 
