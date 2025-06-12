@@ -35,6 +35,9 @@ const Header = (props: HeaderProps) => {
         <Link to="/">
           <button className="main-btn">Home</button>
         </Link>
+        <Link to="/login">
+          <button className="main-btn">Login</button>
+        </Link>
         <div className="theme-switch">
           <span>Night mode</span>
           <label className="switch">
