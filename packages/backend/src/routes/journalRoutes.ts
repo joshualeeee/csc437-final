@@ -1,8 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { JournalProvider } from "../journalProvider";
-import { MongoClient } from "mongodb";
 
-const MAX_JOURNAL_LENGTH = 100;
+const MAX_JOURNAL_LENGTH = 3000;
 
 // Extend Express Request type to include user
 interface AuthenticatedRequest extends Request {
