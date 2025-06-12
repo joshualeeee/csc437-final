@@ -1,3 +1,4 @@
+import { IApiJournalData } from "common/IApiData";
 import { MongoClient, Collection, ObjectId, Filter } from "mongodb";
 
 // Journal schema for reference
@@ -45,13 +46,25 @@ export class JournalProvider {
         this.userCollection = this.mongoClient.db().collection(userCollectionName);
     }
 
-    async getAllJournalsFromAuthor(username: string): Promise<IJournalDocument[]> {
+    async getAllJournalsFromAuthor(username: string): Promise<IApiJournalData[]> {
         const user = await this.userCollection.findOne({ username });
         if (!user) {
             throw new Error("User not found");
         }
 
-        return this.journalCollection.find({ authorId: user._id }).toArray();
+        const journals = await this.journalCollection.find({ authorId: user._id }).toArray();
+        
+        // Map the journal documents to IApiJournalData format
+        return journals.map(journal => ({
+            id: journal._id?.toString() || '',
+            author: {
+                id: user._id.toString(),
+                username: user.username
+            },
+            title: journal.title,
+            entry: journal.entry,
+            date: journal.date.toISOString().split('T')[0] // Convert to YYYY-MM-DD format
+        }));
     }
 
     async createJournal(
