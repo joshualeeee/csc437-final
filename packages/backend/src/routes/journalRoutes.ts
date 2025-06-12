@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { JournalProvider } from "../journalProvider";
+import { IApiJournalData } from "common/IApiData";
 
 const MAX_JOURNAL_LENGTH = 3000;
 
