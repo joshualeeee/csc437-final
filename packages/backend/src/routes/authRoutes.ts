@@ -56,34 +56,39 @@ function generateAuthToken(username: string, jwtSecret: string): Promise<string>
 export function registerAuthRoutes(app: express.Application, mongoClient: MongoClient) {
     app.use(express.json());
     
-    app.post("/auth/register", (req: Request, res: Response) => {
+    app.post("/auth/register", async (req: Request, res: Response) => {
         const c = new CredentialsProvider(mongoClient);
         let username: string = req.body.username;
         let password: string = req.body.password;
+        
         if (!username || !password) {
-            res.status(400).send({
+            res.status(400).json({
                 error: "Bad request",
                 message: "Missing username or password"
             });
             return;
         } 
 
-        c.registerUser(username, password)
-            .then((response) => {
-                if (response === false) {
-                    res.status(409).send({
-                        error: "Bad request",
-                        message: "Username already taken"
-                    });
-                }
-                
-                generateAuthToken(username, app.locals.JWT_SECRET as string)
-                    .then((generatedToken) => res.status(201).send({ token: generatedToken }))
-                    .catch((err) => console.error(err));
-            })
-            .catch((err) => {
-                console.error(`error creating user: ${err}`);
+        try {
+            const registrationResult = await c.registerUser(username, password);
+            
+            if (registrationResult === false) {
+                res.status(409).json({
+                    error: "Conflict",
+                    message: "Username already exists"
+                });
+                return;
+            }
+            
+            const token = await generateAuthToken(username, app.locals.JWT_SECRET as string);
+            res.status(201).json({ token });
+        } catch (error) {
+            console.error(`Error during registration: ${error}`);
+            res.status(500).json({
+                error: "Internal server error",
+                message: "Failed to create user account"
             });
+        }
     });
 
     app.post("/auth/login", (req: Request, res: Response) => {
