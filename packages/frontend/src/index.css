@@ -426,3 +426,41 @@ color: var(--button-color-background);
 white-space: pre-wrap;
 margin-bottom: 1rem;
 }
+
+/* Login Page Styles */
+.LoginPage-form {
+  max-width: 300px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.LoginPage-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--content-color-text);
+}
+
+.LoginPage-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 0.25rem;
+}
+
+.LoginPage-form input[type="submit"] {
+  background-color: var(--button-color-background);
+  color: var(--button-color-text);
+  border: none;
+  cursor: pointer;
+}
+
+.LoginPage-message {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.LoginPage-register-link {
+  text-align: center;
+  margin-top: 1rem;
+}
