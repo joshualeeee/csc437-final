@@ -1,31 +1,53 @@
 import { Routes, Route, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import Home from "./components/Home";
-import Write from "./components/Write";
-import View from "./components/View";
+import { AllJournals } from "./AllJournals";
 import { LoginPage } from "./components/LoginPage";
 import { ValidRoutes } from "csc437-monorepo-backend/src/common/validRoutes";
 import { ProtectedRoute } from "./ProtectedRoute";
 import type { IApiJournalData } from "csc437-monorepo-backend/src/common/IApiData";
+
+enum JournalComponent {
+  WRITE = "write",
+  VIEW = "view",
+}
 
 function App() {
   const [authToken, setAuthToken] = useState<string | null>(() =>
     localStorage.getItem("authToken")
   );
   const [journals, setJournals] = useState<IApiJournalData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authToken) {
-      fetch("/api/journals", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+    if (!authToken) return;
+
+    setIsLoading(true);
+    setHasError(false); // reset error on new attempt
+
+    fetch("/api/journals", {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch journals");
+        }
+        return response.json();
       })
-        .then((response) => response.json())
-        .then((data) => setJournals(data))
-        .catch((error) => console.error("Error fetching journals:", error));
-    }
+      .then((data) => {
+        setJournals(data);
+        setIsLoading(false);
+        setHasError(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching journals:", error);
+        setIsLoading(false);
+        setHasError(true);
+      });
   }, [authToken]);
 
   const handleAuth = (token: string) => {
@@ -40,7 +62,6 @@ function App() {
         path={ValidRoutes.HOME}
         element={
           <ProtectedRoute authToken={authToken || ""}>
-            {" "}
             <Home />{" "}
           </ProtectedRoute>
         }
@@ -49,7 +70,13 @@ function App() {
         path={ValidRoutes.WRITE}
         element={
           <ProtectedRoute authToken={authToken || ""}>
-            <Write authToken={authToken || ""} />
+            <AllJournals
+              authToken={authToken || ""}
+              isLoading={isLoading}
+              hasError={hasError}
+              journals={journals}
+              component={JournalComponent.WRITE}
+            ></AllJournals>
           </ProtectedRoute>
         }
       />
@@ -57,7 +84,13 @@ function App() {
         path={ValidRoutes.VIEW}
         element={
           <ProtectedRoute authToken={authToken || ""}>
-            <View journals={journals} authToken={authToken || ""} />
+            <AllJournals
+              authToken={authToken || ""}
+              isLoading={isLoading}
+              hasError={hasError}
+              journals={journals}
+              component={JournalComponent.VIEW}
+            ></AllJournals>
           </ProtectedRoute>
         }
       />
